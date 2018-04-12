@@ -32,10 +32,11 @@ function insert_csv(path,options)
 		reader.CSV_SyncParse(path,f_options.separator,(data)=>{
 			var predicate={};
 			predicate[f_options.link_key_name]=data[f_options.link_local_key_name];
-			var foreign_doc=f_options.mongoose_foreign_model.find(predicate);
-			data[f_options.foreign_key]=foreign_doc[f_options.primary_key];
-			var doc = new f_options.mongoose_model(data);
-			doc.save(f_options.on_err);
+			f_options.mongoose_foreign_model.find(predicate,(foreign_doc)=>{
+				data[f_options.foreign_key]=foreign_doc[f_options.primary_key];
+				var doc = new f_options.mongoose_model(data);
+				doc.save(f_options.on_err);
+			});
 		});
 	}
 	else
