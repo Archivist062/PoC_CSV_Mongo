@@ -1,0 +1,17 @@
+{
+  "name": "poc_hugosway_csv",
+  "version": "0.0.1",
+  "description": "A proof of concept of CSV transpiling to MongoDB request",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/test001.js"
+  },
+  "author": "Ludovic 'Archivist' Lagouardette <lagouardette.ludovic@gmail.com>",
+  "license": "UNLICENCED",
+  "jshintConfig": {
+    "esversion": 6
+  },
+  "dependencies": {
+    "mongoose": "^5.0.14"
+  }
+}
