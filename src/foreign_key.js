@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 var reader = require("./stable_read");
-
+/*
 function fk_stamp(element, foreign, fk_options)
 {
 	var fk_info={
@@ -11,7 +11,7 @@ function fk_stamp(element, foreign, fk_options)
 	var options = Object.assign({}, fk_info, fk_options);
 	element[options.local_name]=foreign[options.foreign_name];
 	options.callback(element);
-}
+}*/
 
 function insert_csv(path,options)
 {
@@ -24,6 +24,7 @@ function insert_csv(path,options)
 		mongoose_foreign_model: {},
 		foreign_key: "ownerId",
 		primary_key: "_rowid",
+		default_fk:"none",
 		on_err:(err)=>{console.log(err);}
 	};
 	var f_options = Object.assign({}, defaults, options);
@@ -32,8 +33,15 @@ function insert_csv(path,options)
 		reader.CSV_SyncParse(path,f_options.separator,(data)=>{
 			var predicate={};
 			predicate[f_options.link_key_name]=data[f_options.link_local_key_name];
-			f_options.mongoose_foreign_model.find(predicate,(foreign_doc)=>{
-				data[f_options.foreign_key]=foreign_doc[f_options.primary_key];
+			f_options.mongoose_foreign_model.findOne(predicate,(err,foreign_doc)=>{
+				if(foreign_doc===null)
+				{
+					data[f_options.foreign_key]=f_options.default_fk;
+				}
+				else
+				{
+					data[f_options.foreign_key]=foreign_doc[f_options.primary_key];
+				}
 				var doc = new f_options.mongoose_model(data);
 				doc.save(f_options.on_err);
 			});

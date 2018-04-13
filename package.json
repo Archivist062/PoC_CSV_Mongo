@@ -13,6 +13,6 @@
     "esversion": 6
   },
   "dependencies": {
-    "mongoose": "^5.0.14"
+    "mongoose": "^4.13.12"
   }
 }
